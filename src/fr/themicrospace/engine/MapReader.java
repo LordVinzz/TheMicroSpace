@@ -4,12 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import fr.themicrospace.engine.entities.Enemy;
+import fr.themicrospace.engine.entities.Hoopa;
 import fr.themicrospace.engine.entities.Player;
+import fr.themicrospace.engine.entities.Sprinkler;
 import fr.themicrospace.engine.entities.Wall;
 import fr.themicrospace.graphics.Texture;
 
@@ -45,11 +45,11 @@ public class MapReader {
 					list.add(new Player(x*32, y*32));
 				}
 				if(i == 0xFF00FF00) {
-					//TODO list.add(new Booster(x*32, y*32, false));
-					list.add(new Enemy(x*32, y*32));
+					list.add(new Sprinkler(x*32, y*32));
 				}
 				if(i == 0xFF0000FF) {
 					//TODO list.add(new Booster(x*32, y*32, true));
+					list.add(new Hoopa(x*32, y*32));
 				}
 			}
 		}

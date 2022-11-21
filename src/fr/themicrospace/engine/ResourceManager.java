@@ -1,6 +1,7 @@
 package fr.themicrospace.engine;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import fr.themicrospace.graphics.Renderer;
@@ -11,7 +12,10 @@ public class ResourceManager {
 	
 	private List<GameObject> updatables = new ArrayList<GameObject>();
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
+	private List<GameObject> shortlived = new ArrayList<GameObject>();
+	
 	private List<GameObject> queue = new ArrayList<GameObject>();
+	
 	private Camera camera;
 	
 	private boolean isUpdating = false;
@@ -42,6 +46,10 @@ public class ResourceManager {
 			if((b = go.getAttribute("Camera")) != null) {
 				camera = (Camera) go.getAttribute("Camera");
 			}
+			
+			if((b = go.getAttribute("Lifespan")) != null) {
+				shortlived.add(go);
+			}
 		}else {
 			queue.add(go);
 		}
@@ -67,6 +75,19 @@ public class ResourceManager {
 		for(GameObject go : queue) {
 			addResource(go);
 		}
+		
+		for(Iterator<GameObject> it = shortlived.iterator(); it.hasNext();) {
+			GameObject go = it.next();
+			Lifespan ls = (Lifespan)go.getAttribute("Lifespan");
+
+			if(ls.value() < 0) {
+				renderer.remove((Sprite)go.getAttribute("Sprite"));
+				updatables.remove(go);
+				gameObjects.remove(go);
+				it.remove();
+			}
+		}
+		
 		queue.clear();
 	}
 	

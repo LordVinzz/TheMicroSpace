@@ -30,4 +30,7 @@ public class Wall extends GameObject{
 		sprite.setLight(i);
 	}
 	
+	@Override
+	public void collideWith(GameObject go) {}
+	
 }

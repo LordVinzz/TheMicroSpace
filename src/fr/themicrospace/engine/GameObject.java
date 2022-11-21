@@ -20,5 +20,5 @@ public abstract class GameObject {
 	}
 	
 	public abstract void update();
-
+	public abstract void collideWith(GameObject go);
 }

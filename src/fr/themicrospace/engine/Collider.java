@@ -45,7 +45,7 @@ public class Collider extends Attribute<Boolean>{
 			
 			if ((px1 >= 0) && (py1 >= 0) && (px2 <= 0) && (py2 <= 0)) {
 				if (objC.value()) {
-					//TODO
+					ref.collideWith(obj);
 				} else {
 					switch (closerToZero(px1, py1, px2, py2)) {
 					case 1:

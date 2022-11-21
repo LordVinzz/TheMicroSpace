@@ -11,16 +11,16 @@ import fr.themicrospace.graphics.Texture;
 import fr.themicrospace.main.Main;
 import fr.themicrospace.main.TheMicroSpace;
 
-public class Enemy extends GameObject{
+public class Sprinkler extends GameObject{
 	
 	private Transform positions = new Transform(0,0,0);
 	private Sprite sprite = new Sprite(Texture.mob, this);
 	private Collider collider;
-	private Timer timer = new Timer(4);
+	private Timer timer = new Timer(20);
 	
 	private ResourceManager rm = TheMicroSpace.getInstance().getResourceManager();
 	
-	public Enemy(float x, float y) {
+	public Sprinkler(float x, float y) {
 		super(true);
 		positions.setX(x);
 		positions.setY(y);
@@ -45,5 +45,10 @@ public class Enemy extends GameObject{
 		}
 	}
 
+	
+	@Override
+	public void collideWith(GameObject go) {
+		
+	}
 
 }

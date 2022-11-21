@@ -69,5 +69,10 @@ public class Renderer {
 		}
 		
 	}
+
+	public void remove(Sprite sprite) {
+		Transform t = sprite.getCoords();
+		renderables.get((int)t.getZ()).remove(sprite);
+	}
 	
 }

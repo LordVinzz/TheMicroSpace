@@ -8,7 +8,8 @@ public class Bullet extends GameObject{
 
 	private Transform positions = new Transform(0,0,1);
 	private BulletVelocity velocity = new BulletVelocity(positions, 0F, 0.005F, 16F);
-	private Sprite sprite = new Sprite(Texture.characters, this);
+	private Sprite sprite = new Sprite(Texture.stone, this);
+	private Lifespan lifespan = new Lifespan(180);
 	private Collider collider;
 	
 	public Bullet(float x, float y, float vx, float vy) {
@@ -22,6 +23,7 @@ public class Bullet extends GameObject{
 		addAttribute(new Transform(8, 8, "Quad"));
 		addAttribute(new Transform(0, 0, "SpriteBase"));
 		addAttribute(new Transform(1, 1, "SpriteOffset"));
+		addAttribute(lifespan);
 		collider = new Collider(true, this);
 		addAttribute(collider);
 		addAttribute(sprite);
@@ -29,6 +31,7 @@ public class Bullet extends GameObject{
 
 	@Override
 	public void update() {
+		lifespan.updateLifespan();
 		velocity.update();
 	}
 	
@@ -52,4 +55,8 @@ public class Bullet extends GameObject{
 		
 	}
 
+	
+	@Override
+	public void collideWith(GameObject go) {
+	}
 }

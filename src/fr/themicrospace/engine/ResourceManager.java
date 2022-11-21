@@ -11,7 +11,10 @@ public class ResourceManager {
 	
 	private List<GameObject> updatables = new ArrayList<GameObject>();
 	private List<GameObject> gameObjects = new ArrayList<GameObject>();
+	private List<GameObject> queue = new ArrayList<GameObject>();
 	private Camera camera;
+	
+	private boolean isUpdating = false;
 	
 	public void init() {
 		List<GameObject> go = MapReader.read("/map.png");
@@ -21,22 +24,26 @@ public class ResourceManager {
 	}
 	
 	public void addResource(GameObject go) {
-		Sprite spr;
-		if((spr = (Sprite) go.getAttribute("Sprite")) != null) {
-			renderer.add(spr);
-		}
-		
-		Attribute<?> b;
-		if((b = go.getAttribute("Updatable")) != null) {
-			if((Boolean)b.value()) updatables.add(go);
-		}
-		
-		if((b = go.getAttribute("Collider")) != null) {
-			gameObjects.add(go);
-		}
-		
-		if((b = go.getAttribute("Camera")) != null) {
-			camera = (Camera) go.getAttribute("Camera");
+		if(!isUpdating) {
+			Sprite spr;
+			if((spr = (Sprite) go.getAttribute("Sprite")) != null) {
+				renderer.add(spr);
+			}
+			
+			Attribute<?> b;
+			if((b = go.getAttribute("Updatable")) != null) {
+				if((Boolean)b.value()) updatables.add(go);
+			}
+			
+			if((b = go.getAttribute("Collider")) != null) {
+				gameObjects.add(go);
+			}
+			
+			if((b = go.getAttribute("Camera")) != null) {
+				camera = (Camera) go.getAttribute("Camera");
+			}
+		}else {
+			queue.add(go);
 		}
 	}
 	
@@ -45,6 +52,7 @@ public class ResourceManager {
 	}
 
 	public void update() {
+		isUpdating = true;
 		for(GameObject obj : updatables) {
 			obj.update();
 		}
@@ -54,6 +62,12 @@ public class ResourceManager {
 				collider.passObjects(new ArrayList<GameObject>(gameObjects));
 			}
 		}
+		isUpdating = false;
+		
+		for(GameObject go : queue) {
+			addResource(go);
+		}
+		queue.clear();
 	}
 	
 	public void updateCamera() {

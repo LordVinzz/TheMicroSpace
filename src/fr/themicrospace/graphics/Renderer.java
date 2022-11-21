@@ -51,11 +51,11 @@ public class Renderer {
 	public void add(Sprite sprite) {
 		ArrayList<Sprite> list = new ArrayList<Sprite>();
 		Transform t = sprite.getCoords();
-		if(renderables.get((int)t.z()) == null) {
+		if(renderables.get((int)t.getZ()) == null) {
 			list.add(sprite);
-			renderables.put((int)t.z(), list);
+			renderables.put((int)t.getZ(), list);
 		}else {
-			list = renderables.get((int)t.z());
+			list = renderables.get((int)t.getZ());
 			list.add(sprite);
 			Collections.sort(list, comparator);
 		}

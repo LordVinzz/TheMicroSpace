@@ -6,7 +6,7 @@ public class Velocity extends Attribute<Matrix2f>{
 
 	private Transform positions;
 	
-	private float maxA;
+	protected float maxA;
 	
 	public Velocity(Transform positions, float aX, float aY, float maxA) {
 		super(null, "Velocity");
@@ -30,18 +30,10 @@ public class Velocity extends Attribute<Matrix2f>{
 	 *  _1 | vy | ay |
 	 */
 	
-	public void update() {
-		attribute.m00 += attribute.m10 * (maxA - attribute.m00); //adds acceleration to speed
-		attribute.m01 += attribute.m11 * (maxA - attribute.m01);
-		positions.x(positions.x() + attribute.m00);
-		positions.y(positions.y() + attribute.m01);
-	}
+	public void update() {}
 	
-	public Matrix2f predict() {
-		Matrix2f mat = new Matrix2f(attribute);
-		mat.m00 += mat.m10 * (maxA - mat.m00); //adds acceleration to speed
-		mat.m01 += mat.m11 * (maxA - mat.m01);
-		return mat;
+	public Transform predict() {
+		return null;
 	}
 	
 	public void setAx(float aX) {

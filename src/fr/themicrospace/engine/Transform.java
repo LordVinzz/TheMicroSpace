@@ -9,6 +9,10 @@ public class Transform extends Attribute<Vector3f>{
 		super(attribute, customName);
 	}
 	
+	public Transform(Transform transform) {
+		super(new Vector3f(transform.value().x, transform.value().y, transform.value().z), "Transform");
+	}
+	
 	public Transform(Vector3f attribute) {
 		super(attribute, "Transform");
 	}
@@ -33,32 +37,32 @@ public class Transform extends Attribute<Vector3f>{
 		super(new Vector3f(x,y,0), customName);
 	}
 	
-	public float x() {
+	public float getX() {
 		return this.value().getX();
 	}
 	
-	public void x(float x) {
+	public void setX(float x) {
 		this.value().setX(x);
 	}
 	
-	public float y() {
+	public float getY() {
 		return this.value().getY();
 	}
 	
-	public void y(float y) {
+	public void setY(float y) {
 		this.value().setY(y);
 	}
 	
-	public float z() {
+	public float getZ() {
 		return this.value().getZ();
 	}
 	
-	public void z(float z) {
+	public void setZ(float z) {
 		this.value().setZ(z);
 	}
 
 	public Transform copy() {
-		return new Transform(this.x(), this.y(), this.z());
+		return new Transform(this.getX(), this.getY(), this.getZ());
 	}
 	
 	

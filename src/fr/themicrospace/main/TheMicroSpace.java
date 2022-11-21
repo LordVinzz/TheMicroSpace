@@ -4,9 +4,6 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.GL11;
 
 import fr.themicrospace.engine.ResourceManager;
-import fr.themicrospace.engine.entities.Booster;
-import fr.themicrospace.engine.entities.Player;
-import fr.themicrospace.engine.entities.Wall;
 import fr.themicrospace.graphics.DisplayComponent;
 
 public class TheMicroSpace {
@@ -64,6 +61,10 @@ public class TheMicroSpace {
 	
 	public static TheMicroSpace getInstance() {
 		return Main.getTms();
+	}
+	
+	public ResourceManager getResourceManager() {
+		return rm;
 	}
 
 	public boolean isLooping() {

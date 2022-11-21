@@ -30,22 +30,22 @@ public class Sprite extends Attribute<Texture>{
 					  sB = (Transform) ref.getAttribute("SpriteBase");
 			GL11.glColor3ub(light, light, light);
 			if(sO == null || sB == null) {			
-				GL11.glVertex2f(transform.x(), transform.y());
-				GL11.glVertex2f(transform.x() + quad.x(), transform.y());
-				GL11.glVertex2f(transform.x() + quad.x(), transform.y() + quad.y());
-				GL11.glVertex2f(transform.x(), transform.y() + quad.y());
+				GL11.glVertex2f(transform.getX(), transform.getY());
+				GL11.glVertex2f(transform.getX() + quad.getX(), transform.getY());
+				GL11.glVertex2f(transform.getX() + quad.getX(), transform.getY() + quad.getY());
+				GL11.glVertex2f(transform.getX(), transform.getY() + quad.getY());
 			} else {
-				GL11.glTexCoord2f(sB.x(), sB.y());
-				GL11.glVertex2f(transform.x(), transform.y());
+				GL11.glTexCoord2f(sB.getX(), sB.getY());
+				GL11.glVertex2f(transform.getX(), transform.getY());
 				
-				GL11.glTexCoord2f(sB.x() + sO.x(), sB.y());
-				GL11.glVertex2f(transform.x() + quad.x(), transform.y());
+				GL11.glTexCoord2f(sB.getX() + sO.getX(), sB.getY());
+				GL11.glVertex2f(transform.getX() + quad.getX(), transform.getY());
 				
-				GL11.glTexCoord2f(sB.x() + sO.x(), sB.y() + sO.y());
-				GL11.glVertex2f(transform.x() + quad.x(), transform.y() + quad.y());
+				GL11.glTexCoord2f(sB.getX() + sO.getX(), sB.getY() + sO.getY());
+				GL11.glVertex2f(transform.getX() + quad.getX(), transform.getY() + quad.getY());
 				
-				GL11.glTexCoord2f(sB.x(), sB.y() + sO.y());
-				GL11.glVertex2f(transform.x(), transform.y() + quad.y());
+				GL11.glTexCoord2f(sB.getX(), sB.getY() + sO.getY());
+				GL11.glVertex2f(transform.getX(), transform.getY() + quad.getY());
 
 			}
 		}

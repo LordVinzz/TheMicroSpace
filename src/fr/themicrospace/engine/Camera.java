@@ -14,8 +14,8 @@ public class Camera extends Attribute<Transform>{
 		display = TheMicroSpace.getInstance().getDisplay();
 	}
 	public void update() {
-		float cx = display.getWidth() / 2 - attribute.x();
-		float cy = display.getHeight() / 2 - attribute.y();
+		float cx = display.getWidth() / 2 - attribute.getX();
+		float cy = display.getHeight() / 2 - attribute.getY();
 		GL11.glTranslatef(cx, cy, 0);
 	}
 

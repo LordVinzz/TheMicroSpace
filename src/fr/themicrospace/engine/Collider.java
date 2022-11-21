@@ -10,6 +10,7 @@ public class Collider extends Attribute<Boolean>{
 	private ArrayList<GameObject> gameObjects;
 	private GameObject ref;
 	private boolean tGrounded = false, bGrounded = false, lGrounded = false, rGrounded = false;
+	private float px1, px2, py1, py2;
 	
 	private Transform positions;
 	private Velocity velocity;
@@ -41,40 +42,31 @@ public class Collider extends Attribute<Boolean>{
 			float py1 = positions.value().y + quad.value().y - objP.value().y;
 			float px2 = positions.value().x - objP.value().x - objQ.value().x;
 			float py2 = positions.value().y - objP.value().y - objQ.value().y;
-			if ((px1 > 0) && (py1 > 0) && (px2 < 0) && (py2 < 0)) {
+			
+			if ((px1 >= 0) && (py1 >= 0) && (px2 <= 0) && (py2 <= 0)) {
 				if (objC.value()) {
-					TriggerBehavior tb = (TriggerBehavior) obj.getAttribute("TriggerBehavior");
-					ref.applyBehavior(tb);
+					//TODO
 				} else {
 					switch (closerToZero(px1, py1, px2, py2)) {
 					case 1:
-						positions.x(positions.x() - px1);
-						velocity.setVx(0);
+						this.px1 = px1;
 						lGrounded = true;
-						obj.setLight((byte) 255);
 						break;
 					case 2:
-						positions.y(positions.y() - py1);
-						velocity.setVy(0);
+						this.py1 = py1;
 						tGrounded = true;
-						obj.setLight((byte) 255);
 						break;
 					case 3:
-						positions.x(positions.x() - px2);
-						velocity.setVx(0);
+						this.px2 = px2;
 						rGrounded = true;
-						obj.setLight((byte) 255);
 						break;
 					case 4:
-						positions.y(positions.y() - py2);
-						velocity.setVy(0);
+						this.py2 = py2;
 						bGrounded = true;
-						obj.setLight((byte) 255);
 						break;
 					}
 				}
 			} else {
-				obj.setLight((byte) 127);
 				tGrounded |= false;
 				rGrounded |= false;
 				lGrounded |= false;
@@ -88,25 +80,16 @@ public class Collider extends Attribute<Boolean>{
 				f20 = Math.abs(f2),
 				f30 = Math.abs(f3),
 				f40 = Math.abs(f4);
-		if(f10 <= f20 && f10 <= f30 && f10 <= f40) {
-			return 1;
-		}
-		if(f20 <= f30 && f20 <= f40) {
+		if(f20 <= f10 && f20 <= f30 && f20 <= f40) {
 			return 2;
+		}
+		if(f10 <= f30 && f10 <= f40) {
+			return 1;
 		}
 		if(f30 <= f40) {
 			return 3;
 		}
 		return 4;
-	}
-	
-	public Transform predict(Transform pos, Velocity vel) {
-		Matrix2f mat = vel.predict();
-		Transform t = pos.copy();
-		
-		t.x(t.x() + mat.m00);
-		t.y(t.y() + mat.m01);
-		return t;
 	}
 	
 	public boolean isTGrounded() {
@@ -122,6 +105,16 @@ public class Collider extends Attribute<Boolean>{
 	
 	public boolean isBGrounded() {
 		return bGrounded;
+	}
+	
+	public float getPx1() {
+		return px1;
+	}public float getPx2() {
+		return px2;
+	}public float getPy1() {
+		return py1;
+	}public float getPy2() {
+		return py2;
 	}
 
 }

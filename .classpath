@@ -2,11 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-18">
-		<attributes>
-			<attribute name="module" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="lib" path="libs/AppleJavaExtensions.jar"/>
 	<classpathentry kind="lib" path="libs/asm-debug-all.jar"/>
 	<classpathentry kind="lib" path="libs/jinput.jar"/>
@@ -25,5 +20,6 @@
 	<classpathentry kind="lib" path="libs/lzma.jar"/>
 	<classpathentry kind="lib" path="libs/substance-7.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/trident-7.2.1.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.8.0_333"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

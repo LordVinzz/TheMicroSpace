@@ -21,7 +21,4 @@ public abstract class GameObject {
 	
 	public abstract void update();
 
-	protected abstract void setLight(byte i);
-
-	protected abstract void applyBehavior(TriggerBehavior tb);
 }

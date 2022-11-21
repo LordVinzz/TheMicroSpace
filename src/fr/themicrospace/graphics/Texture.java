@@ -30,6 +30,7 @@ public class Texture {
 	public static Texture characters = loadTexture("/characters.png");
 	public static Texture stone = loadTexture("/therock.png");
 	public static Texture booster = loadTexture("/booster.png");
+	public static Texture mob = loadTexture("/mob.png");
 	
 	private Texture(int width, int height, int id) {
 		this.width = width;

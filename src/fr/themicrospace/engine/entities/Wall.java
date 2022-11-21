@@ -4,8 +4,6 @@ import fr.themicrospace.engine.Collider;
 import fr.themicrospace.engine.GameObject;
 import fr.themicrospace.engine.Sprite;
 import fr.themicrospace.engine.Transform;
-import fr.themicrospace.engine.TriggerBehavior;
-import fr.themicrospace.engine.Velocity;
 import fr.themicrospace.graphics.Texture;
 
 public class Wall extends GameObject{
@@ -28,13 +26,8 @@ public class Wall extends GameObject{
 	@Override
 	public void update() {}
 
-	@Override
-	protected void setLight(byte i) {
+	public void setLight(byte i) {
 		sprite.setLight(i);
 	}
 	
-	@Override
-	protected void applyBehavior(TriggerBehavior tb) {
-		
-	}
 }

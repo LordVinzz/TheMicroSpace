@@ -1,29 +1,28 @@
 package fr.themicrospace.engine.entities;
 
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.util.vector.Matrix2f;
 
 import fr.themicrospace.engine.Camera;
 import fr.themicrospace.engine.Collider;
 import fr.themicrospace.engine.GameObject;
 import fr.themicrospace.engine.Sprite;
-import fr.themicrospace.engine.Timer;
 import fr.themicrospace.engine.Transform;
-import fr.themicrospace.engine.TriggerBehavior;
 import fr.themicrospace.engine.Velocity;
 import fr.themicrospace.graphics.Texture;
 
 public class Player extends GameObject {
 
 	private Transform positions = new Transform(0,0,0);
-	private Velocity velocity = new Velocity(positions, 0F, 0.005F, 16F);
+	private PlayerVelocity velocity = new PlayerVelocity(positions, 0F, 0.005F, 16F);
 	private Sprite sprite = new Sprite(Texture.characters, this);
 	private Collider collider;
 	private Camera camera;
 
 	public Player(float x, float y) {
 		super(true);
-		positions.x(x);
-		positions.y(y);
+		positions.setX(x);
+		positions.setY(y);
 		addAttribute(positions);
 		addAttribute(velocity);
 		addAttribute(new Transform(32, 32, "Quad"));
@@ -50,19 +49,72 @@ public class Player extends GameObject {
 			velocity.setVy(-3.9F);
 		}
 		velocity.update();
-		velocity.setAx(velocity.getAx() / 1.1F);
 	}
 
 	public void updateCam() {
 		camera.update();
 	}
 	
-	@Override
-	protected void setLight(byte i) {}
-	
-	@Override
-	protected void applyBehavior(TriggerBehavior tb) {
-		tb.applyBehavior(this);
+	private class PlayerVelocity extends Velocity{
+		
+		boolean tGroundedPrev = false, bGroundedPrev = false, lGroundedPrev = false, rGroundedPrev = false;
+		
+		public PlayerVelocity(Matrix2f attribute, Transform positions) {
+			super(attribute, positions);
+		}
+		
+		
+
+		public PlayerVelocity(Transform positions, float f, float g, float h) {
+			super(positions,f,g,h);
+		}
+
+		@Override
+		public void update() {
+			
+			if(tGroundedPrev != collider.isTGrounded() && collider.isTGrounded()) {
+				positions.setY(positions.getY() - collider.getPy1());
+				velocity.setVy(0);
+			}
+			if(bGroundedPrev != collider.isBGrounded() && collider.isBGrounded()) {
+				positions.setY(positions.getY() - collider.getPy2());
+				velocity.setVy(0);
+			}
+			if(lGroundedPrev != collider.isLGrounded() && collider.isLGrounded()) {
+				positions.setX(positions.getX() - collider.getPx1());
+				velocity.setVx(0);
+			}
+			if(rGroundedPrev != collider.isRGrounded() && collider.isRGrounded()) {
+				positions.setX(positions.getX() - collider.getPx2());
+				velocity.setVx(0);
+			}
+			
+			
+			if(!collider.isTGrounded()) {
+				
+				attribute.m00 += attribute.m10 * (maxA - attribute.m00); //adds acceleration to speed
+				attribute.m01 += attribute.m11 * (maxA - attribute.m01);
+			}
+			if((!collider.isLGrounded() && attribute.m00 > 0) || (!collider.isRGrounded() && attribute.m00 < 0)) {
+				positions.setX(positions.getX() + attribute.m00);
+			}
+			positions.setY(positions.getY() + attribute.m01);
+			
+			
+			tGroundedPrev = collider.isTGrounded();
+			bGroundedPrev = collider.isBGrounded();
+			lGroundedPrev = collider.isLGrounded();
+			rGroundedPrev = collider.isRGrounded();
+		}
+		
+		@Override
+		public Transform predict() {
+			Transform transform = new Transform(positions);
+			transform.setX(positions.getX() + attribute.m00);
+			transform.setY(positions.getY() + attribute.m00);
+			return transform;
+		
+		}
+		
 	}
-	
 }

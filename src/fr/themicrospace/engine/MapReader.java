@@ -4,10 +4,11 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import fr.themicrospace.engine.entities.Booster;
+import fr.themicrospace.engine.entities.Enemy;
 import fr.themicrospace.engine.entities.Player;
 import fr.themicrospace.engine.entities.Wall;
 import fr.themicrospace.graphics.Texture;
@@ -36,16 +37,19 @@ public class MapReader {
 				int i = pixels[x + y * w];
 
 				if(i == 0xFF000000) {
-					list.add(new Wall(x*32, y*32, 32, 32));
+					Wall w1 = new Wall(x*32, y*32, 32, 32);
+					w1.setLight((byte)(200 + (x*y) % 55));
+					list.add(w1);
 				}
 				if(i == 0xFFFF0000) {
 					list.add(new Player(x*32, y*32));
 				}
 				if(i == 0xFF00FF00) {
-					list.add(new Booster(x*32, y*32, false));
+					//TODO list.add(new Booster(x*32, y*32, false));
+					list.add(new Enemy(x*32, y*32));
 				}
 				if(i == 0xFF0000FF) {
-					list.add(new Booster(x*32, y*32, true));
+					//TODO list.add(new Booster(x*32, y*32, true));
 				}
 			}
 		}

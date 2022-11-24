@@ -1,5 +1,11 @@
 package fr.themicrospace.engine;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -19,11 +25,22 @@ public class ResourceManager {
 	private Camera camera;
 	
 	private boolean isUpdating = false;
+	private boolean reloadFlag = false;
 	
 	public void init() {
 		List<GameObject> go = MapReader.read("/map.png");
+		
 		for(GameObject gameObj : go) {
 			addResource(gameObj);
+		}
+				
+		try(FileOutputStream fos = new FileOutputStream("save.dat");
+			ObjectOutputStream oos = new ObjectOutputStream(fos);) {
+			
+			oos.writeObject(go);
+
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -89,10 +106,48 @@ public class ResourceManager {
 		}
 		
 		queue.clear();
+		if(reloadFlag) {
+			updatables.clear();
+			shortlived.clear();
+			gameObjects.clear();
+			queue.clear();
+			renderer.clear();
+			
+			reload();
+			reloadFlag = false;
+		}
 	}
 	
 	public void updateCamera() {
 		camera.update();
+	}
+
+	public void reload() {
+		File file = new File("save.dat");
+		if(!file.exists()) {
+			System.exit(0);
+		}
+		
+		try (FileInputStream fis = new FileInputStream(file);
+				ObjectInputStream ois = new ObjectInputStream(fis)){
+			
+			List<GameObject> gameObjects = (List<GameObject>) ois.readObject();
+			
+			for(GameObject obj : gameObjects) {
+				addResource(obj);
+			}
+			
+			
+			camera.grabDisplay();
+			
+		}catch(IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	public void setReloadFlag() {
+		reloadFlag = true;
 	}
 	
 }

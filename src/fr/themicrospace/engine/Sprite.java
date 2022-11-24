@@ -4,18 +4,25 @@ import org.lwjgl.opengl.GL11;
 
 import fr.themicrospace.graphics.Texture;
 
-public class Sprite extends Attribute<Texture>{
+public class Sprite extends Attribute<Integer>{
+
+	private static final long serialVersionUID = -2831471745839762029L;
 
 	private GameObject ref;
 	private byte light = -1;
 	
-	public Sprite(Texture attribute, GameObject ref) {
+	public Sprite(Texture texture, GameObject ref) {
+		super(texture.getId(), "Sprite");
+		this.ref = ref;
+	}
+	
+	public Sprite(Integer attribute, GameObject ref) {
 		super(attribute, "Sprite");
 		this.ref = ref;
 	}
 	
 	public int getTextureId() {
-		return this.value().getId();
+		return this.value();
 	}
 	
 	public Transform getCoords() {
@@ -28,7 +35,7 @@ public class Sprite extends Attribute<Texture>{
 			
 			Transform sO = (Transform) ref.getAttribute("SpriteOffset"),
 					  sB = (Transform) ref.getAttribute("SpriteBase");
-			GL11.glColor3ub(light, light, light);
+			GL11.glColor4ub(light, light, light, light);
 			if(sO == null || sB == null) {			
 				GL11.glVertex2f(transform.getX(), transform.getY());
 				GL11.glVertex2f(transform.getX() + quad.getX(), transform.getY());

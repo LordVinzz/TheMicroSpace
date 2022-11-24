@@ -8,17 +8,17 @@ import fr.themicrospace.engine.Sprite;
 import fr.themicrospace.engine.Timer;
 import fr.themicrospace.engine.Transform;
 import fr.themicrospace.graphics.Texture;
-import fr.themicrospace.main.Main;
 import fr.themicrospace.main.TheMicroSpace;
 
 public class Sprinkler extends GameObject{
 	
+	private static final long serialVersionUID = -7045974379363848507L;
+
 	private Transform positions = new Transform(0,0,0);
 	private Sprite sprite = new Sprite(Texture.mob, this);
 	private Collider collider;
 	private Timer timer = new Timer(20);
 	
-	private ResourceManager rm = TheMicroSpace.getInstance().getResourceManager();
 	
 	public Sprinkler(float x, float y) {
 		super(true);
@@ -34,14 +34,14 @@ public class Sprinkler extends GameObject{
 		addAttribute(timer);
 		timer.start();
 	}
-
+	
 	@Override
 	public void update() {
 		timer.update();
 		if(timer.isReady()) {
 			timer.reset();
 			timer.start();
-			rm.addResource(new Bullet(positions.getX() + 12, positions.getY()+12, (float)Math.random()*20 - 10F, -5F - (float)Math.random() * 3F));
+			TheMicroSpace.getInstance().getResourceManager().addResource(new Bullet(positions.getX() + 12, positions.getY()+12, (float)Math.random()*10 - 5F, -5F - (float)Math.random() * 3F));
 		}
 	}
 

@@ -6,6 +6,7 @@ import fr.themicrospace.graphics.Texture;
 
 public class Bullet extends GameObject{
 
+	private static final long serialVersionUID = 8019550456745966523L;
 	private Transform positions = new Transform(0,0,1);
 	private BulletVelocity velocity = new BulletVelocity(positions, 0F, 0.005F, 16F);
 	private Sprite sprite = new Sprite(Texture.stone, this);
@@ -36,6 +37,8 @@ public class Bullet extends GameObject{
 	}
 	
 	private class BulletVelocity extends Velocity{
+
+		private static final long serialVersionUID = 1185202518066544342L;
 
 		public BulletVelocity(Matrix2f attribute, Transform positions) {
 			super(attribute, positions);

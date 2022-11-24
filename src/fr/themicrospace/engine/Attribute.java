@@ -1,7 +1,10 @@
 package fr.themicrospace.engine;
 
-public abstract class Attribute<T> {
+import java.io.Serializable;
 
+public abstract class Attribute<T> implements Serializable{
+
+	private static final long serialVersionUID = -7688397316360736040L;
 	protected T attribute;
 	protected String attributeName;
 	

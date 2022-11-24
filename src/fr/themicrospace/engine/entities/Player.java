@@ -8,15 +8,24 @@ import fr.themicrospace.engine.Camera;
 import fr.themicrospace.engine.Collider;
 import fr.themicrospace.engine.GameObject;
 import fr.themicrospace.engine.Sprite;
+import fr.themicrospace.engine.Timer;
 import fr.themicrospace.engine.Transform;
 import fr.themicrospace.engine.Velocity;
 import fr.themicrospace.graphics.Texture;
+import fr.themicrospace.main.TheMicroSpace;
 
 public class Player extends GameObject {
+
+	private static final long serialVersionUID = 7197739751207776416L;
 
 	private Transform positions = new Transform(0,0,0);
 	private PlayerVelocity velocity = new PlayerVelocity(positions, 0F, 0.005F, 16F);
 	private Sprite sprite = new Sprite(Texture.characters, this);
+	private Timer hitTimer = new Timer(20);
+	private byte light = -1;
+	private int hitTicks = 0;
+	private int hits = 0;
+	private boolean isHit = false, godMode = false;
 	private Collider collider;
 	private Camera camera;
 
@@ -35,10 +44,14 @@ public class Player extends GameObject {
 		addAttribute(collider);
 		addAttribute(sprite);
 	}
+	
+	public void setCoords(float x, float y) {
+		positions.setX(x);
+		positions.setY(y);
+	}
 
 	@Override
 	public void update() {
-
 		if (Keyboard.isKeyDown(Keyboard.KEY_Q) && !collider.isRGrounded()) {
 			velocity.setVx(-5F);
 		} else if (Keyboard.isKeyDown(Keyboard.KEY_D) && !collider.isLGrounded()) {
@@ -49,7 +62,34 @@ public class Player extends GameObject {
 		if(Keyboard.isKeyDown(Keyboard.KEY_SPACE) && collider.isTGrounded() && !collider.isBGrounded()) {
 			velocity.setVy(-3.4F);
 		}
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_G)) {
+			godMode = true;
+		}
+		
+		if(godMode) {
+			hits = 0;
+			hitTimer.start();
+		}
+		
 		velocity.update();
+		
+		if(hitTimer.isReady()) {
+			light = (byte) (-1 -light);
+			hitTimer.reset();
+			hitTicks++;
+			if(hitTicks < 6) {
+				hitTimer.start();
+			}else {
+				hitTicks = 0;
+				isHit = false;
+				if(hits == 3) {
+					TheMicroSpace.getInstance().getResourceManager().setReloadFlag();
+				}
+			}
+		}
+		hitTimer.update();
+		sprite.setLight(light);
 	}
 
 	public void updateCam() {
@@ -58,12 +98,26 @@ public class Player extends GameObject {
 	
 	@Override
 	public void collideWith(GameObject go) {
-		if(go instanceof Bullet bullet) {
+		if(go instanceof Bullet) {
+			if(hitTicks == 0 && !isHit) {
+				hitTimer.start();
+				hits++;
+				isHit=true;
+			}
+		}
+		if(go instanceof Hoopa) {
+			if(hitTicks == 0 && !isHit) {
+				hitTimer.start();
+				hits++;
+				isHit=true;
+			}
 		}
 	}
 	
 	private class PlayerVelocity extends Velocity{
 		
+		private static final long serialVersionUID = 1964294125278359454L;
+
 		boolean tGroundedPrev = false, bGroundedPrev = false, lGroundedPrev = false, rGroundedPrev = false;
 		
 		public PlayerVelocity(Matrix2f attribute, Transform positions) {

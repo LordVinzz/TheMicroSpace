@@ -1,5 +1,8 @@
 package fr.themicrospace.graphics;
 
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL11.glBindTexture;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -9,7 +12,6 @@ import java.util.TreeMap;
 
 import org.lwjgl.opengl.GL11;
 
-import fr.themicrospace.engine.GameObject;
 import fr.themicrospace.engine.Sprite;
 import fr.themicrospace.engine.Transform;
 
@@ -24,18 +26,18 @@ public class Renderer {
 	
 	public void render() {
 		if(renderables.isEmpty()) return;
-		Texture currentTexture = renderables.get(0).get(0).value();
-		currentTexture.bind();
+		Integer currentTexture = renderables.get(0).get(0).value();
+		glBindTexture(GL_TEXTURE_2D, currentTexture);
 		GL11.glBegin(GL11.GL_QUADS);
 		
 		for (Entry<Integer, ArrayList<Sprite>> mapentry : renderables.entrySet()) {
 			ArrayList<Sprite> list = mapentry.getValue();
 			for(Sprite sprite : list) {
-				if(sprite.getTextureId() != currentTexture.getId()) {
+				if(sprite.value() != currentTexture) {
 					currentTexture = sprite.value();
 					GL11.glEnd();
 					
-					currentTexture.bind();
+					glBindTexture(GL_TEXTURE_2D, currentTexture);
 					GL11.glBegin(GL11.GL_QUADS);
 				}
 				
@@ -61,6 +63,10 @@ public class Renderer {
 		}
 	}
 
+	public void clear() {
+		renderables.clear();
+	}
+	
 	private class RendererComparator implements Comparator<Sprite>{
 
 		@Override

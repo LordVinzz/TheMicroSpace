@@ -9,6 +9,8 @@ import fr.themicrospace.graphics.Texture;
 public class Wall extends GameObject{
 	
 	
+	private static final long serialVersionUID = -7610048579288536978L;
+
 	private Transform positions;
 	private Sprite sprite = new Sprite(Texture.stone, this);
 

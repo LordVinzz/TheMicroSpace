@@ -2,7 +2,6 @@ package fr.themicrospace.engine.entities;
 
 import org.lwjgl.util.vector.Matrix2f;
 
-import fr.themicrospace.engine.Bullet;
 import fr.themicrospace.engine.Collider;
 import fr.themicrospace.engine.GameObject;
 import fr.themicrospace.engine.Sprite;
@@ -13,14 +12,22 @@ import fr.themicrospace.engine.Velocity;
 
 public class Hoopa extends GameObject{
 
+	private static final long serialVersionUID = -1428464139172994459L;
+
 	private Transform positions = new Transform(0,0,0);
 	private Sprite sprite = new Sprite(Texture.mob, this);
 	private HoopaVelocity velocity = new HoopaVelocity(positions, 0F, 0.005F, 16F);
 	private Collider collider;
+	private Player player;
+	private Transform playerTransform;
+	private boolean agro = false;
+	
 	private Timer timer = new Timer(20);
 	
-	public Hoopa(float x, float y) {
+	public Hoopa(float x, float y, Player p) {
 		super(true);
+		this.player = p;
+		playerTransform = (Transform) player.getAttribute("Transform");
 		positions.setX(x);
 		positions.setY(y);
 		addAttribute(positions);
@@ -33,16 +40,34 @@ public class Hoopa extends GameObject{
 		addAttribute(timer);
 		timer.start();
 	}
-
+	
+	float t = 0;
 	@Override
 	public void update() {
+		float targetDistance = playerTransform.getX() - positions.getX() + 32F*(float)Math.sin(t);
+		if(Math.abs(targetDistance) < 64) agro = true;
 		if(Math.random() > 0.85F) timer.update();
 		if(timer.isReady()) {
 			timer.reset();
 			timer.start();
-			velocity.changeDirection();
+			if(!agro) {
+				velocity.changeDirection();
+			}else {
+				if(Math.random() > 0.2F) {
+					agro = false;
+				}
+			}
 		}
-		velocity.update();
+		if(agro) {
+			
+			if(targetDistance < 0) {
+				velocity.direction = 0;
+			}else {
+				velocity.direction = 1;
+			}
+		}
+		if(Math.abs(targetDistance)<500)velocity.update();
+		t+=Math.random();
 	}
 
 	@Override
@@ -50,6 +75,8 @@ public class Hoopa extends GameObject{
 	
 	private class HoopaVelocity extends Velocity {
 		
+		private static final long serialVersionUID = 2103208326350010464L;
+
 		private int direction = 0;
 		private boolean tGroundedPrev = false, bGroundedPrev = false, lGroundedPrev = false, rGroundedPrev = false;
 		
@@ -74,12 +101,14 @@ public class Hoopa extends GameObject{
 			if(lGroundedPrev != collider.isLGrounded() && collider.isLGrounded()) {
 				positions.setX(positions.getX() - collider.getPx1());
 				velocity.setVx(0);
-				changeDirection();
 			}
 			if(rGroundedPrev != collider.isRGrounded() && collider.isRGrounded()) {
 				positions.setX(positions.getX() - collider.getPx2());
 				velocity.setVx(0);
-				changeDirection();
+			}
+			
+			if((collider.isLGrounded() || collider.isRGrounded()) && collider.isTGrounded()) {
+				velocity.setVy(-3.9F);
 			}
 			
 			if(direction == 1) {

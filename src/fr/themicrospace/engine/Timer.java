@@ -2,6 +2,8 @@ package fr.themicrospace.engine;
 
 public class Timer extends Attribute<Integer> {
 
+	private static final long serialVersionUID = 2109060503205324905L;
+
 	private int t0 = 0;
 	private boolean ready = false;
 	private boolean started = false;

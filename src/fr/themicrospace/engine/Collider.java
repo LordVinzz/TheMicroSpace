@@ -2,10 +2,9 @@ package fr.themicrospace.engine;
 
 import java.util.ArrayList;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.util.vector.Matrix2f;
-
 public class Collider extends Attribute<Boolean>{
+
+	private static final long serialVersionUID = 1716342284891331702L;
 
 	private ArrayList<GameObject> gameObjects;
 	private GameObject ref;
@@ -13,7 +12,10 @@ public class Collider extends Attribute<Boolean>{
 	private float px1, px2, py1, py2;
 	
 	private Transform positions;
+
+	@SuppressWarnings("unused")
 	private Velocity velocity;
+	
 	private Transform quad;
 	
 	public Collider(Boolean attribute, GameObject ref) {

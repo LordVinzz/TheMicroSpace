@@ -5,6 +5,8 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class Transform extends Attribute<Vector3f>{
 
+	private static final long serialVersionUID = 6765519764067620838L;
+
 	public Transform(Vector3f attribute, String customName) {
 		super(attribute, customName);
 	}

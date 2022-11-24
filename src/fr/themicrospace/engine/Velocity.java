@@ -4,6 +4,9 @@ import org.lwjgl.util.vector.Matrix2f;
 
 public class Velocity extends Attribute<Matrix2f>{
 
+	private static final long serialVersionUID = -5743454075830418858L;
+
+	@SuppressWarnings("unused")
 	private Transform positions;
 	
 	protected float maxA;

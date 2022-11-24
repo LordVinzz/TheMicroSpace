@@ -31,7 +31,7 @@ public class MapReader {
 		int[] pixels = new int[w * h];
 		image.getRGB(0, 0, w, h, pixels, 0, w);
 
-
+		Player p = new Player(0,0);
 		for (int y = 0; y < h; y++) {
 			for (int x = 0; x < w; x++) {
 				int i = pixels[x + y * w];
@@ -42,14 +42,15 @@ public class MapReader {
 					list.add(w1);
 				}
 				if(i == 0xFFFF0000) {
-					list.add(new Player(x*32, y*32));
+					p.setCoords(x*32, y*32);
+					list.add(p);
 				}
 				if(i == 0xFF00FF00) {
 					list.add(new Sprinkler(x*32, y*32));
 				}
 				if(i == 0xFF0000FF) {
 					//TODO list.add(new Booster(x*32, y*32, true));
-					list.add(new Hoopa(x*32, y*32));
+					list.add(new Hoopa(x*32, y*32, p));
 				}
 			}
 		}

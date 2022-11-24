@@ -1,6 +1,7 @@
 package fr.themicrospace.main;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.Sys;
 import org.lwjgl.opengl.GL11;
 
 import fr.themicrospace.engine.ResourceManager;
@@ -30,6 +31,7 @@ public class TheMicroSpace {
 
 	public void render() {
 		display.view2D();
+		GL11.glClearColor(0.14142F, 0.31415F, 0.6969F, 1);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 
 		rm.updateCamera();
@@ -45,8 +47,8 @@ public class TheMicroSpace {
 		while (isLooping) {
 			if (display.isCloseRequested()) isLooping = false;
 			display.updateDisplay();
-			update();
 			render();
+			update();
 
 			synchronized (this) {
 				try {
@@ -74,5 +76,6 @@ public class TheMicroSpace {
 	public DisplayComponent getDisplay() {
 		return display;
 	}
+
 	
 }
